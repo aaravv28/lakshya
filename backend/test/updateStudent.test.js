@@ -24,7 +24,7 @@ describe("updating a student profile", () => {
             cgpa: 9.9,
             backlogs: 3,
             studentEmail: "new@ddu.ac.in",
-            department: "IT",
+            department: "Information Technology",
             semester: 7,
             studentName: "Someone Else",
             enrollmentNo: "24CE999"
@@ -45,7 +45,7 @@ describe("updating a student profile", () => {
         assert.equal(fetched.body.studentEmail, "asha@ddu.ac.in");
         assert.equal(fetched.body.studentName, "Asha Patel");
         assert.equal(fetched.body.backlogs, 0);
-        assert.equal(fetched.body.department, "CE");
+        assert.equal(fetched.body.department, "Computer Engineering");
         assert.equal(fetched.body.semester, 5);
         assert.equal(fetched.body.enrollmentNo, "24CE001");
         assert.deepEqual(fetched.body.skills, ["React"]);

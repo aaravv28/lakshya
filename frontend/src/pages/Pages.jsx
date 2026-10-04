@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { api, endpoints } from '../services/api'
-import { API_BASE_URL, formatCurrency, formatDate } from '../config/appConfig'
+import { API_BASE_URL, DEPARTMENTS, formatCurrency, formatDate } from '../config/appConfig'
 import { useAuth } from '../auth/useAuth'
 import { useRecruiterRegistration } from '../recruiter/useRecruiterRegistration'
 import { DetailRow, EmptyState, ErrorState, Field, LoadingState, PageHeader, SectionHeading, SelectField, StatCard, StatusBadge } from '../components/common'
@@ -358,7 +358,7 @@ export const OfficerCompanies = () => <OfficerTablePage type="companies" />
 export const OfficerRecruiters = () => <OfficerTablePage type="recruiters" />
 
 const emptyStudent = { enrollmentNo: '', studentName: '', studentEmail: '', department: '', semester: '', cgpa: '', backlogs: '', skills: '', password: '' }
-const studentFields = [['enrollmentNo', 'Enrollment no.'], ['studentName', 'Full name'], ['studentEmail', 'Email', { type: 'email' }], ['department', 'Department'], ['semester', 'Semester', { type: 'number' }], ['cgpa', 'CGPA', { type: 'number', min: 0, max: 10, step: 0.01 }], ['backlogs', 'Backlogs', { type: 'number', min: 0 }], ['password', 'Password', { type: 'password', autoComplete: 'new-password' }]]
+const studentFields = [['enrollmentNo', 'Enrollment no.'], ['studentName', 'Full name'], ['studentEmail', 'Email', { type: 'email' }], ['department', 'Department', { options: DEPARTMENTS, placeholder: 'Choose a department' }], ['semester', 'Semester', { type: 'number' }], ['cgpa', 'CGPA', { type: 'number', min: 0, max: 10, step: 0.01 }], ['backlogs', 'Backlogs', { type: 'number', min: 0 }], ['password', 'Password', { type: 'password', autoComplete: 'new-password' }]]
 
 function AddStudentForm({ onAdded }) {
   const [form, setForm] = useState(emptyStudent)
@@ -378,7 +378,12 @@ function AddStudentForm({ onAdded }) {
     }
   }
   return <form className="surface form-grid" onSubmit={submit}>
-    {studentFields.map(([name, label, props = {}]) => <Field key={name} label={error?.field === name ? `${label} (already in use)` : label} value={form[name]} onChange={(event) => setForm({ ...form, [name]: event.target.value })} required aria-invalid={error?.field === name || undefined} {...props} />)}
+    {studentFields.map(([name, label, { options, placeholder, ...props } = {}]) => {
+      const fieldProps = { label: error?.field === name ? `${label} (already in use)` : label, value: form[name], onChange: (event) => setForm({ ...form, [name]: event.target.value }), required: true, 'aria-invalid': error?.field === name || undefined }
+      return options
+        ? <SelectField key={name} {...fieldProps}><option value="" disabled>{placeholder}</option>{options.map((option) => <option key={option}>{option}</option>)}</SelectField>
+        : <Field key={name} {...fieldProps} {...props} />
+    })}
     <label className="field full-field"><span>Skills (comma separated, optional)</span><input value={form.skills} onChange={(event) => setForm({ ...form, skills: event.target.value })} /></label>
     {error && <div className="error-state full-field">{error.message}</div>}
     <button className="button button-dark" type="submit" disabled={saving}>{saving ? 'Saving…' : 'Add student'}</button>

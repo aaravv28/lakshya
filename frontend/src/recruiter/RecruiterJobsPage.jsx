@@ -1,16 +1,19 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, endpoints } from '../services/api'
-import { formatCurrency, formatDate } from '../config/appConfig'
+import { DEPARTMENTS, formatCurrency, formatDate } from '../config/appConfig'
 import { EmptyState, ErrorState, Field, LoadingState, PageHeader, SelectField, StatusBadge } from '../components/common'
+import MultiSelectField from '../components/MultiSelectField'
 import { useRecruiterRegistration } from './useRecruiterRegistration'
 
-const emptyJob = { jobTitle: '', jobType: 'Full-time', package: '', deadline: '', minCgpa: '', maxBacklogs: '0', allowedDepartments: '', jobDescription: '' }
+const NO_DEPARTMENTS = 'Choose at least one department.'
+
+const emptyJob ={ jobTitle: '', jobType: 'Full-time', package: '', deadline: '', minCgpa: '', maxBacklogs: '0', allowedDepartments: [], jobDescription: '' }
 
 const toForm = (job) => ({
   ...job,
   deadline: job.deadline ? job.deadline.slice(0, 10) : '',
-  allowedDepartments: (job.allowedDepartments || []).join(', '),
+  allowedDepartments: job.allowedDepartments || [],
 })
 
 const toBody = (form) => ({
@@ -20,7 +23,7 @@ const toBody = (form) => ({
   deadline: form.deadline,
   minCgpa: Number(form.minCgpa),
   maxBacklogs: Number(form.maxBacklogs),
-  allowedDepartments: form.allowedDepartments.split(',').map((item) => item.trim().toUpperCase()).filter(Boolean),
+  allowedDepartments: form.allowedDepartments,
   jobDescription: form.jobDescription,
 })
 
@@ -29,9 +32,14 @@ function JobForm({ job, onSaved, onCancel }) {
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
   const set = (name) => (event) => setForm({ ...form, [name]: event.target.value })
+  const noDepartments = form.allowedDepartments.length === 0
   const submit = async (event) => {
     event.preventDefault()
     setError('')
+    if (noDepartments) {
+      setError(NO_DEPARTMENTS)
+      return
+    }
     setSaving(true)
     try {
       if (job) await api.put(`${endpoints.jobs}/${job.jobId}`, toBody(form))
@@ -51,7 +59,7 @@ function JobForm({ job, onSaved, onCancel }) {
     <Field label="Application deadline" type="date" value={form.deadline} onChange={set('deadline')} required />
     <Field label="Minimum CGPA" type="number" min="0" max="10" step="0.01" value={form.minCgpa} onChange={set('minCgpa')} required />
     <Field label="Maximum backlogs" type="number" min="0" value={form.maxBacklogs} onChange={set('maxBacklogs')} required />
-    <label className="field full-field"><span>Departments (comma separated, e.g. CE, IT)</span><input value={form.allowedDepartments} onChange={set('allowedDepartments')} required /></label>
+    <MultiSelectField label="Departments" options={DEPARTMENTS} value={form.allowedDepartments} onChange={(allowedDepartments) => setForm({ ...form, allowedDepartments })} placeholder="Choose departments" invalid={error === NO_DEPARTMENTS} />
     <label className="field full-field"><span>Job description</span><textarea rows="4" value={form.jobDescription} onChange={set('jobDescription')} required /></label>
     {error && <div className="error-state full-field">{error}</div>}
     <button className="button button-dark" type="submit" disabled={saving}>{saving ? 'Saving…' : job ? 'Save job' : 'Add job'}</button>

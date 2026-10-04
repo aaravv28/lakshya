@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { hashPassword } = require("../config/auth");
+const { DEPARTMENTS, DEPARTMENT_MESSAGE } = require("../utils/departments");
 
 const studentSchema = new mongoose.Schema({
     studentName: {
@@ -25,7 +26,8 @@ const studentSchema = new mongoose.Schema({
 
     department: {
         type: String,
-        required: true
+        required: true,
+        enum: { values: DEPARTMENTS, message: DEPARTMENT_MESSAGE }
     },
 
     semester: {

@@ -21,7 +21,7 @@ const jobFixture = (overrides = {}) => ({
     deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     minCgpa: 7,
     maxBacklogs: 0,
-    allowedDepartments: ["CE", "IT"],
+    allowedDepartments: ["Computer Engineering", "Information Technology"],
     ...overrides
 });
 

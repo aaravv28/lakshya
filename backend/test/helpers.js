@@ -36,7 +36,7 @@ const studentFixture = (overrides = {}) => ({
     studentName: "Asha Patel",
     studentEmail: "asha@ddu.ac.in",
     enrollmentNo: "24CE001",
-    department: "CE",
+    department: "Computer Engineering",
     semester: 5,
     cgpa: 8.2,
     backlogs: 0,

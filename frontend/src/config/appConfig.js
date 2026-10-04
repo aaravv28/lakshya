@@ -1,5 +1,17 @@
 export const API_BASE_URL = '/api'
 
+// Must match backend/utils/departments.js; the server refuses any other name.
+export const DEPARTMENTS = [
+  'Computer Engineering',
+  'Information Technology',
+  'Electronics & Communication',
+  'Electrical',
+  'Mechanical',
+  'Civil',
+  'Chemical',
+  'Instrumentation & Control',
+]
+
 export const formatDate = (value) => {
   if (!value) return 'Not specified'
   return new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium' }).format(new Date(value))

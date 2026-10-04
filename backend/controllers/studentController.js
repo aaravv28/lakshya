@@ -65,6 +65,11 @@ const createStudent = async (req, res) => {
 };
 
 const updateStudent = async (req, res) => {
+    // The body goes to the database as an update, so an operator like $set could get past the field checks below.
+    if (Object.keys(req.body).some((field) => field.startsWith("$"))) {
+        return res.status(400).json({ message: "Only plain field names can be updated" });
+    }
+
     if ("password" in req.body) {
         return res.status(400).json({ message: "Password cannot be changed here. Use the password endpoint." });
     }
@@ -79,6 +84,11 @@ const updateStudent = async (req, res) => {
     // Applications, projects, resumes and notifications link to a student by enrollment number.
     if ("enrollmentNo" in req.body) {
         return res.status(400).json({ message: "Enrollment number cannot be changed" });
+    }
+
+    // A student's department is set once, when the placement officer adds them.
+    if ("department" in req.body) {
+        return res.status(400).json({ message: "Department cannot be changed" });
     }
 
     const { skills } = req.body;

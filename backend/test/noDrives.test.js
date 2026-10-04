@@ -14,7 +14,7 @@ const job = {
     deadline: "2026-12-31",
     minCgpa: 7,
     maxBacklogs: 0,
-    allowedDepartments: ["CE"],
+    allowedDepartments: ["Computer Engineering"],
     jobStatus: "Open"
 };
 

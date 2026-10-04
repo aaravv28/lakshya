@@ -23,6 +23,10 @@ An organisation that hires through Lakshya. A company has exactly one recruiter 
 One role a company is hiring for, with its own package, deadline and eligibility rules. Recruiters may say "role"; it means the same thing.
 _Avoid_: opening, posting, vacancy
 
+**Department**:
+One of the fixed academic departments Lakshya serves: Computer Engineering, Information Technology, Electronics & Communication, Electrical, Mechanical, Civil, Chemical, and Instrumentation & Control. Always written by its full name and chosen from this list, never typed freely.
+_Avoid_: branch, short codes (CE, IT)
+
 **Company registration**:
 A recruiter's request to hire through Lakshya: the recruiter, their company and the jobs they submit with it. The placement officer approves or rejects it once. Once approved it is final: the company's and recruiter's details can no longer be edited, and the recruiter's new jobs go live without further approval.
 _Avoid_: signup request, verification
@@ -42,6 +46,8 @@ The explanation the placement officer must give when rejecting a company registr
 - Two **Companies** never share a name (ignoring capitals and extra spaces).
 - Once approved, a **Company**, its **Recruiter** and its **Jobs** are never edited or removed. A **Job** stops taking applications when its deadline passes.
 - After approval, a **Recruiter** can still add new **Jobs**; they go live immediately.
+- Every **Student** belongs to exactly one **Department**, set when the **Placement officer** adds them and never changed afterwards.
+- A **Job** is open to one or more **Departments**.
 
 ## Example dialogue
 
@@ -54,3 +60,4 @@ The explanation the placement officer must give when rejecting a company registr
 - "Confirm" was used both for the recruiter sending their details and for the officer accepting them. Resolved: the recruiter **submits** a company registration; the placement officer **approves** or **rejects** it.
 - "Pick an existing company" was considered and dropped: two recruiters never represent the same company, so every company registration brings its own company.
 - Removing a recruiter (with their company and jobs) was considered and dropped: approved records are permanent.
+- Departments were written inconsistently ("COMPUTER ENGINEERING", "Computer engineering", "CE"). Resolved: a **Department** is always its full name from the fixed list.

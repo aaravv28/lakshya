@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { DEPARTMENTS, DEPARTMENT_MESSAGE } = require("../utils/departments");
 
 const jobSchema = new mongoose.Schema({
     jobId: {
@@ -52,8 +53,8 @@ const jobSchema = new mongoose.Schema({
     },
 
     allowedDepartments: {
-        type: [String],
-        required: true
+        type: [{ type: String, enum: { values: DEPARTMENTS, message: DEPARTMENT_MESSAGE } }],
+        validate: { validator: (departments) => departments.length > 0, message: "Choose at least one department" }
     },
 
     jobStatus: {
