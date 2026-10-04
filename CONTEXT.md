@@ -19,6 +19,10 @@ _Avoid_: employer, HR
 **Company**:
 An organisation that hires through Lakshya. A company has exactly one recruiter and can have many jobs.
 
+**Industry**:
+The one field of work a company says it is in, chosen from Lakshya's fixed list (for example Software Development, Banking & Finance, Automobile, or Other). Never typed freely.
+_Avoid_: sector, domain
+
 **Job**:
 One role a company is hiring for, with its own package, deadline and eligibility rules. Recruiters may say "role"; it means the same thing.
 _Avoid_: opening, posting, vacancy
@@ -39,7 +43,7 @@ The explanation the placement officer must give when rejecting a company registr
 
 ## Relationships
 
-- A **Company** has exactly one **Recruiter** and many **Jobs**.
+- A **Company** has exactly one **Recruiter** and many **Jobs**, and is in exactly one **Industry**.
 - A **Recruiter** belongs to exactly one **Company** and has at most one open **Company registration**.
 - A **Company registration** covers one **Recruiter**, one **Company** and the **Jobs** submitted with it.
 - Nothing from a **Company registration** is visible to **Students** until the **Placement officer** approves it.

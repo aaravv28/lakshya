@@ -23,7 +23,7 @@ describe("recruiter prepares their company and jobs", () => {
 
         const response = await recruiter.put("/api/registration", {
             recruiterName: "Priya N.", phone: "9000000000", designation: "HR Lead",
-            companyName: "Flipkart Internet", industry: "Retail", website: "https://fk.com", description: "Shop", logoUrl: "https://fk.com/l.png",
+            companyName: "Flipkart Internet", industry: "Consumer Goods (FMCG)", description: "Shop", logoUrl: "https://fk.com/l.png",
             recruiterEmail: "other@x.com", registrationStatus: "Approved", companyId: "COM999"
         });
         const read = await recruiter.get("/api/registration");

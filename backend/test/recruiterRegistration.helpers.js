@@ -8,7 +8,6 @@ const registrationFixture = (overrides = {}) => ({
     password: "priya-pass",
     companyName: "Flipkart",
     industry: "E-commerce",
-    website: "https://flipkart.com",
     description: "Online marketplace",
     ...overrides
 });

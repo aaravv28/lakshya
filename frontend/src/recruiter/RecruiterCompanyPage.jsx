@@ -1,15 +1,20 @@
 import { useState } from 'react'
 import { api, endpoints } from '../services/api'
-import { DetailRow, ErrorState, Field, LoadingState, PageHeader, SectionHeading } from '../components/common'
+import { INDUSTRIES } from '../config/appConfig'
+import { DetailRow, ErrorState, Field, LoadingState, PageHeader, SectionHeading, SelectField } from '../components/common'
 import { useRecruiterRegistration } from './useRecruiterRegistration'
 
 const recruiterFields = [['recruiterName', 'Full name'], ['phone', 'Phone', { type: 'tel' }], ['designation', 'Designation']]
-const companyFields = [['companyName', 'Company name'], ['industry', 'Industry'], ['website', 'Website', { type: 'url' }], ['description', 'About the company'], ['logoUrl', 'Logo URL (optional)', { type: 'url', required: false }]]
+const companyFields = [['companyName', 'Company name'], ['industry', 'Industry', { options: INDUSTRIES, placeholder: 'Choose an industry' }], ['description', 'About the company'], ['logoUrl', 'Logo URL (optional)', { type: 'url', required: false }]]
+
+// A saved value that is no longer on the list starts empty, so the dropdown asks for a choice
+// instead of looking set while still holding the old value.
+const startingValue = (value, options) => (options && !options.includes(value) ? '' : value || '')
 
 function EditRegistrationForm({ registration, onSaved }) {
   const [form, setForm] = useState(() => Object.fromEntries([
     ...recruiterFields.map(([name]) => [name, registration.recruiter[name] || '']),
-    ...companyFields.map(([name]) => [name, registration.company[name] || '']),
+    ...companyFields.map(([name, , props]) => [name, startingValue(registration.company[name], props?.options)]),
   ]))
   const [error, setError] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -26,7 +31,10 @@ function EditRegistrationForm({ registration, onSaved }) {
       setSaving(false)
     }
   }
-  const field = ([name, label, props = {}]) => <Field key={name} label={error?.field === name ? `${label} — ${error.message}` : label} value={form[name]} onChange={(event) => setForm({ ...form, [name]: event.target.value })} required aria-invalid={error?.field === name || undefined} {...props} />
+  const field = ([name, label, props = {}]) => {
+    const Input = props.options ? SelectField : Field
+    return <Input key={name} label={error?.field === name ? `${label} — ${error.message}` : label} value={form[name]} onChange={(event) => setForm({ ...form, [name]: event.target.value })} required aria-invalid={error?.field === name || undefined} {...props} />
+  }
   return <form className="surface form-grid" onSubmit={submit}>
     <h3 className="full-field">Your details</h3>
     {recruiterFields.map(field)}
@@ -54,7 +62,6 @@ export default function RecruiterCompanyPage() {
       <SectionHeading title="Company" />
       <div className="detail-grid">
         <DetailRow label="Industry" value={company.industry} />
-        <DetailRow label="Website" value={company.website} />
         <DetailRow label="Logo" value={company.logoUrl || '—'} />
         <DetailRow label="Company ID" value={company.companyId} />
       </div>

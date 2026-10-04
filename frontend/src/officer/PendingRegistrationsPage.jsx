@@ -70,7 +70,6 @@ export function ReviewRegistrationPage() {
       <SectionHeading title="Company" />
       <div className="detail-grid">
         <DetailRow label="Industry" value={company.industry} />
-        <DetailRow label="Website" value={company.website} />
         <DetailRow label="Logo" value={company.logoUrl || '—'} />
       </div>
     </section>

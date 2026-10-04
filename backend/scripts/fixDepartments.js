@@ -11,9 +11,9 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const { DEPARTMENTS } = require("../utils/departments");
+const { properNameFinder } = require("../utils/properName");
 
-const departmentKey = (name) => String(name).trim().replace(/\s+/g, " ").toLowerCase();
-const PROPER_NAMES = new Map(DEPARTMENTS.map((department) => [departmentKey(department), department]));
+const properDepartment = properNameFinder(DEPARTMENTS);
 
 const planDepartmentFix = async (db) => {
     const problems = [];
@@ -22,7 +22,7 @@ const planDepartmentFix = async (db) => {
             problems.push(`${owner} has no department`);
             return name;
         }
-        const proper = PROPER_NAMES.get(departmentKey(name));
+        const proper = properDepartment(name);
         if (!proper) problems.push(`${owner} has unknown department "${name}"`);
         return proper || name;
     };

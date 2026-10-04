@@ -37,8 +37,11 @@ export function Field({ label, ...props }) {
   return <label className="field"><span>{label}</span><input {...props} /></label>
 }
 
-export function SelectField({ label, children, ...props }) {
-  return <label className="field"><span>{label}</span><select {...props}>{children}</select></label>
+// Pass `options` (with a `placeholder`) to pick from a fixed list, or `children` for hand-written options.
+export function SelectField({ label, options, placeholder, children, ...props }) {
+  return <label className="field"><span>{label}</span><select {...props}>
+    {options ? <><option value="" disabled>{placeholder}</option>{options.map((option) => <option key={option}>{option}</option>)}</> : children}
+  </select></label>
 }
 
 export function Logo() {

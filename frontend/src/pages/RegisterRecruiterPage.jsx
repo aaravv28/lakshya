@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../services/api'
+import { INDUSTRIES } from '../config/appConfig'
+import { Field, SelectField } from '../components/common'
 
 const recruiterFields = [
   ['recruiterName', 'Full name', { autoComplete: 'name' }],
@@ -12,8 +14,7 @@ const recruiterFields = [
 
 const companyFields = [
   ['companyName', 'Company name', { autoComplete: 'organization' }],
-  ['industry', 'Industry'],
-  ['website', 'Website', { type: 'url', placeholder: 'https://' }],
+  ['industry', 'Industry', { options: INDUSTRIES, placeholder: 'Choose an industry' }],
   ['description', 'About the company'],
   ['logoUrl', 'Logo URL (optional)', { type: 'url', required: false }],
 ]
@@ -40,10 +41,10 @@ export default function RegisterRecruiterPage() {
     }
   }
 
-  const field = ([name, label, props = {}]) => <label className="field" key={name}>
-    <span>{error?.field === name ? `${label} — ${error.message}` : label}</span>
-    <input value={form[name]} onChange={(event) => setForm({ ...form, [name]: event.target.value })} required aria-invalid={error?.field === name || undefined} {...props} />
-  </label>
+  const field = ([name, label, props = {}]) => {
+    const Input = props.options ? SelectField : Field
+    return <Input key={name} label={error?.field === name ? `${label} — ${error.message}` : label} value={form[name]} onChange={(event) => setForm({ ...form, [name]: event.target.value })} required aria-invalid={error?.field === name || undefined} {...props} />
+  }
 
   return <main className="auth-page"><div className="auth-visual"><Link className="auth-brand" to="/"><span className="brand-mark">L</span><strong>Lakshya</strong></Link><div><span className="eyebrow">DDU · CAREER SERVICES</span><h1>Hire from campus<br /><em>with Lakshya.</em></h1><p>Register your company. The placement officer reviews it before students can see it.</p></div><span className="auth-visual-foot">Campus placement management platform</span></div>
     <section className="auth-panel">

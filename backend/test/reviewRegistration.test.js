@@ -36,7 +36,7 @@ describe("placement officer reviews company registrations", () => {
 
         assert.equal(response.status, 200);
         assert.equal(response.body.recruiter.phone, "9123456780");
-        assert.equal(response.body.company.website, "https://flipkart.com");
+        assert.equal(response.body.company.industry, "E-commerce");
         assert.deepEqual(response.body.jobs.map((job) => job.jobTitle), ["Role 1", "Role 2"]);
     });
 
@@ -73,9 +73,9 @@ describe("placement officer reviews company registrations", () => {
     it("lets a rejected recruiter fix things and submit again", async () => {
         const officer = asUser(await officerToken());
         const recruiter = await submitted();
-        await officer.post(`/api/registration/${recruiter.recruiterId}/reject`, { reason: "Wrong website" });
+        await officer.post(`/api/registration/${recruiter.recruiterId}/reject`, { reason: "Description is too short" });
 
-        const edit = await recruiter.put("/api/registration", { website: "https://www.flipkart.com" });
+        const edit = await recruiter.put("/api/registration", { description: "India's online marketplace" });
         const addJob = await recruiter.post("/api/jobs", jobFixture({ jobTitle: "Role 2" }));
         const resubmit = await recruiter.post("/api/registration/submit");
         const read = await recruiter.get("/api/registration");

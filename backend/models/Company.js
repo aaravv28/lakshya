@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { companyNameKey } = require("../utils/companyName");
+const { INDUSTRIES, INDUSTRY_MESSAGE } = require("../utils/industries");
 
 const companySchema = new mongoose.Schema({
     companyId: {
@@ -23,12 +24,8 @@ const companySchema = new mongoose.Schema({
 
     industry: {
         type: String,
-        required: true
-    },
-
-    website: {
-        type: String,
-        required: true
+        required: true,
+        enum: { values: INDUSTRIES, message: INDUSTRY_MESSAGE }
     },
 
     description: {

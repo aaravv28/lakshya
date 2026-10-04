@@ -6,7 +6,7 @@ const { newId } = require("../utils/ids");
 const { canEditRegistration, lockedMessage } = require("../utils/registrationRules");
 
 const RECRUITER_FIELDS = ["recruiterName", "recruiterEmail", "phone", "designation", "password"];
-const COMPANY_FIELDS = ["companyName", "industry", "website", "description"];
+const COMPANY_FIELDS = ["companyName", "industry", "description"];
 
 const DUPLICATE_COMPANY = { message: "This company is already registered on Lakshya.", field: "companyName" };
 const DUPLICATE_EMAIL = { message: "This email is already registered. Log in instead.", field: "recruiterEmail" };
@@ -19,7 +19,6 @@ const FIELD_LABELS = {
     password: "Password",
     companyName: "Company name",
     industry: "Industry",
-    website: "Website",
     description: "Company description"
 };
 
@@ -40,6 +39,11 @@ const sendRegistrationError = (res, error) => {
     if (error.code === 11000) {
         const field = Object.keys(error.keyPattern || error.keyValue || {})[0];
         return res.status(409).json(field === "recruiterEmail" ? DUPLICATE_EMAIL : DUPLICATE_COMPANY);
+    }
+    // Name the field the model refused (such as an industry not on the list) so the form can mark it.
+    if (error.name === "ValidationError") {
+        const [field, detail] = Object.entries(error.errors)[0];
+        return res.status(400).json({ message: detail.message, field });
     }
     return res.status(400).json({ message: error.message });
 };

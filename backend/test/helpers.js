@@ -63,8 +63,7 @@ const createRecruiter = (overrides = {}) => Recruiter.create({
 const companyFixture = (overrides = {}) => ({
     companyId: "COM001",
     companyName: "Google",
-    industry: "Technology",
-    website: "https://google.com",
+    industry: "Software Development",
     description: "Search and cloud",
     ...overrides
 });

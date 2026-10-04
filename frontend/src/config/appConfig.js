@@ -12,6 +12,29 @@ export const DEPARTMENTS = [
   'Instrumentation & Control',
 ]
 
+// Must match backend/utils/industries.js; the server refuses any other name.
+export const INDUSTRIES = [
+  'Information Technology',
+  'Software Development',
+  'IT Consulting & Services',
+  'Banking & Finance',
+  'E-commerce',
+  'Telecommunications',
+  'Electronics & Semiconductors',
+  'Automobile',
+  'Manufacturing',
+  'Construction & Infrastructure',
+  'Energy & Power',
+  'Chemicals',
+  'Healthcare & Pharma',
+  'Education',
+  'Aerospace & Defence',
+  'Logistics & Supply Chain',
+  'Media & Entertainment',
+  'Consumer Goods (FMCG)',
+  'Other',
+]
+
 export const formatDate = (value) => {
   if (!value) return 'Not specified'
   return new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium' }).format(new Date(value))

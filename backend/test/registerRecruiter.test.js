@@ -10,7 +10,6 @@ const registration = (overrides = {}) => ({
     password: "priya-pass",
     companyName: "Flipkart",
     industry: "E-commerce",
-    website: "https://flipkart.com",
     description: "Online marketplace",
     ...overrides
 });
@@ -67,7 +66,7 @@ describe("recruiter registers", () => {
     });
 
     it("asks for every required field", async () => {
-        for (const field of ["recruiterName", "recruiterEmail", "phone", "designation", "password", "companyName", "industry", "website", "description"]) {
+        for (const field of ["recruiterName", "recruiterEmail", "phone", "designation", "password", "companyName", "industry", "description"]) {
             const response = await register(registration({ [field]: "" }));
             assert.equal(response.status, 400, field);
             assert.equal(response.body.field, field, field);
